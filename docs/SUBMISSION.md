@@ -47,6 +47,57 @@ The constraints filename is historical; it does not mean that Python 3.11 was th
 interpreter used for the published full evaluation. Editable installation and
 explicit `PYTHONPATH` keep repository-bound protocol paths in this checkout.
 
+## Enter prompts repeatedly in PowerShell
+
+After completing one of the setup paths, use the matching loop below. Paste the
+whole block into PowerShell, then type your text at `Your prompt (Enter to quit)`.
+Press **Enter with an empty prompt** to exit, or **Ctrl+C** to interrupt.
+
+### Native Windows setup
+
+Run from the release checkout where you created `.venv`. The downloader puts the
+model and tokenizer in `runs/release`; no original training folders are needed.
+
+```powershell
+$env:PYTHONPATH = (Join-Path (Get-Location) 'src')
+
+while ($userPrompt = Read-Host "Your prompt (Enter to quit)") {
+    & ".\.venv\Scripts\python.exe" ".\generate.py" `
+        --checkpoint ".\runs\release\baseline_export.pt" `
+        --tokenizer ".\runs\release\tokenizer.json" `
+        --prompt $userPrompt `
+        --max-new-tokens 40 `
+        --temperature 0 `
+        --top-k 1
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+### Docker setup
+
+If you followed the README's Docker quick start, use its existing image and named
+model volume instead. A host Python installation or `.venv` is not needed.
+
+```powershell
+while ($userPrompt = Read-Host "Your prompt (Enter to quit)") {
+    docker run --rm -v tinybench-model:/model:ro tinybench-lm:verify `
+        python generate.py `
+        --checkpoint /model/baseline_export.pt `
+        --tokenizer /model/tokenizer.json `
+        --prompt $userPrompt `
+        --max-new-tokens 40 `
+        --temperature 0 `
+        --top-k 1
+    if ($LASTEXITCODE -ne 0) { break }
+}
+```
+
+Each entry is an independent text completion: the model does not remember earlier
+prompts. It reloads for each entry and prints the prompt plus its continuation
+after generation finishes. These settings request exactly 40 new tokens and may
+cut off mid-sentence. Repetition and factual errors remain known limitations.
+The loops call the released `generate.py` directly; they do not require a demo kit.
+
 ## Full provisional evaluation
 
 After the native setup, run:

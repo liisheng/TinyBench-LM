@@ -31,6 +31,11 @@ prompt followed by its continuation. The example uses near-zero temperature and 
 Do not expect a factual answer or conversation: repetition and factual errors are
 known limitations. See [generation diagnostics](docs/g5/GENERATION_DIAGNOSTIC.md).
 
+To enter another prompt after each response, use the judge guide's
+[PowerShell prompt loops](docs/SUBMISSION.md#enter-prompts-repeatedly-in-powershell).
+Choose the Docker or native Windows version to match your setup. Press Enter on
+an empty prompt to quit; each prompt is an independent completion.
+
 The named Docker volume keeps the model across container runs. Repeating the
 download command verifies existing files and skips unchanged downloads. GitHub's
 automatic source ZIP does not include release assets; use the downloader or the
