@@ -5,7 +5,7 @@ It continues English text; it is a base model, not an instruction-tuned chatbot.
 The completed baseline trained on **1,000,079,360 loss tokens**. The optional fresh
 3B-token run was abandoned due to time constraints and is not part of this release.
 
-**[Download the trained model and evidence — v1.0.0](https://github.com/liisheng/solid-train/releases/tag/v1.0.0)**
+**[Download the trained model and evidence — v1.0.0](https://github.com/liisheng/TinyBench-LM/releases/tag/v1.0.0)**
 
 ## Start here: run the trained model
 
@@ -15,8 +15,8 @@ key, training corpus, or retraining is required. The model download is about 199
 The commands below work in PowerShell and Bash and run inference on CPU.
 
 ```sh
-git clone --branch v1.0.0 https://github.com/liisheng/solid-train.git
-cd solid-train
+git clone --branch v1.0.0 https://github.com/liisheng/TinyBench-LM.git
+cd TinyBench-LM
 docker build -t tinybench-lm:verify .
 docker volume create tinybench-model
 docker run --rm -v tinybench-model:/model tinybench-lm:verify python release_tools/download_release.py --output-dir /model
